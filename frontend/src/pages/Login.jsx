@@ -8,10 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import {
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { login as loginRequest } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
@@ -20,10 +17,7 @@ import { getErrorMessage } from "../utils/errorMessage";
 const Login = () => {
   const navigate = useNavigate();
 
-  const {
-    login,
-    authenticated,
-  } = useAuth();
+  const { login, authenticated } = useAuth();
 
   const [form, setForm] = useState({
     username: "",
@@ -31,16 +25,10 @@ const Login = () => {
   });
 
   const [error, setError] = useState("");
-  const [loading, setLoading] =
-    useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (authenticated) {
-    return (
-      <Navigate
-        to="/dashboard"
-        replace
-      />
-    );
+    return <Navigate to="/dashboard" replace />;
   }
 
   const handleChange = (event) => {
@@ -61,25 +49,17 @@ const Login = () => {
 
       const data = await loginRequest(form);
 
-      const token =
-        data.access_token || data.token;
+      const token = data.access_token || data.token;
 
       if (!token) {
-        throw new Error(
-          "Access token was not returned."
-        );
+        throw new Error("Access token was not returned.");
       }
 
       login(token);
 
       navigate("/dashboard");
     } catch (requestError) {
-      setError(
-        getErrorMessage(
-          requestError,
-          "Login failed."
-        )
-      );
+      setError(getErrorMessage(requestError, "Login failed."));
     } finally {
       setLoading(false);
     }
@@ -89,25 +69,16 @@ const Login = () => {
     <Container maxWidth="sm">
       <Card sx={{ mt: 10 }}>
         <CardContent sx={{ p: 4 }}>
-          <Typography
-            variant="h4"
-            gutterBottom
-          >
+          <Typography variant="h4" gutterBottom>
             KoalaTech University
           </Typography>
 
-          <Typography
-            color="text.secondary"
-            sx={{ mb: 3 }}
-          >
-            Sign in to continue
+          <Typography color="text.secondary" sx={{ mb: 3 }}>
+            Sign in to continue to this new version of the app
           </Typography>
 
           {error && (
-            <Alert
-              severity="error"
-              sx={{ mb: 2 }}
-            >
+            <Alert severity="error" sx={{ mb: 2 }}>
               {error}
             </Alert>
           )}
@@ -144,9 +115,7 @@ const Login = () => {
               disabled={loading}
               sx={{ mt: 2 }}
             >
-              {loading
-                ? "Signing in..."
-                : "Login"}
+              {loading ? "Signing in..." : "Login"}
             </Button>
           </form>
         </CardContent>
